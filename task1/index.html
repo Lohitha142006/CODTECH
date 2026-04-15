@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CODTECH Quiz App</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        color: white;
+        text-align: center;
+        margin: 0;
+    }
+
+    header {
+        background: #000;
+        padding: 15px;
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: rgba(0,0,0,0.7);
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    .option {
+        display: block;
+        background: #fff;
+        color: #000;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .option:hover {
+        background: #ddd;
+    }
+
+    .correct {
+        background: green !important;
+        color: white;
+    }
+
+    .wrong {
+        background: red !important;
+        color: white;
+    }
+
+    button {
+        margin-top: 15px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background: orange;
+        color: black;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: yellow;
+    }
+
+    #result {
+        font-size: 20px;
+        margin-top: 20px;
+    }
+</style>
+</head>
+
+<body>
+
+<header>CODTECH INTERACTIVE QUIZ</header>
+
+<div class="container">
+    <h2 id="question">Loading...</h2>
+    <div id="options"></div>
+    <button onclick="nextQuestion()">Next</button>
+    <div id="result"></div>
+</div>
+
+<script>
+const quizData = [
+    {
+        question: "What does HTML stand for?",
+        options: ["Hyper Trainer Marking Language", "Hyper Text Markup Language", "Hyper Text Marketing Language", "Hyper Tool Multi Language"],
+        answer: 1
+    },
+    {
+        question: "Which language is used for styling web pages?",
+        options: ["HTML", "JQuery", "CSS", "XML"],
+        answer: 2
+    },
+    {
+        question: "Which is not a JavaScript framework?",
+        options: ["React", "Angular", "Django", "Vue"],
+        answer: 2
+    },
+    {
+        question: "Which is used for backend development?",
+        options: ["CSS", "Python", "HTML", "Bootstrap"],
+        answer: 1
+    }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+function loadQuestion() {
+    answered = false;
+    const q = quizData[currentQuestion];
+    document.getElementById("question").innerText = q.question;
+
+    const optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
+
+    q.options.forEach((option, index) => {
+        const btn = document.createElement("div");
+        btn.classList.add("option");
+        btn.innerText = option;
+        btn.onclick = () => selectAnswer(btn, index);
+        optionsDiv.appendChild(btn);
+    });
+}
+
+function selectAnswer(element, index) {
+    if (answered) return;
+
+    answered = true;
+    const correctIndex = quizData[currentQuestion].answer;
+    const options = document.querySelectorAll(".option");
+
+    options.forEach((opt, i) => {
+        if (i === correctIndex) {
+            opt.classList.add("correct");
+        } else if (i === index) {
+            opt.classList.add("wrong");
+        }
+    });
+
+    if (index === correctIndex) {
+        score++;
+    }
+}
+
+function nextQuestion() {
+    if (!answered) {
+        alert("Please select an answer!");
+        return;
+    }
+
+    currentQuestion++;
+
+    if (currentQuestion < quizData.length) {
+        loadQuestion();
+    } else {
+        document.querySelector(".container").innerHTML = `
+            <h2>Quiz Completed 🎉</h2>
+            <p>Your Score: ${score} / ${quizData.length}</p>
+            <p>Certificate will be issued at internship completion.</p>
+            <button onclick="location.reload()">Restart</button>
+        `;
+    }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
