@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Courses</title>
+</head>
+<body>
+    <h2>Available Courses</h2>
+
+{% for course in courses %}
+    <h3>
+        <a href="/course/{{ course.id }}">{{ course.title }}</a>
+    </h3>
+    <p>{{ course.content }}</p>
+    <hr>
+{% endfor %}
+
+<a href="/">Back</a>
+
+</body>
+</html>

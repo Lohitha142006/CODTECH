@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Detail</title>
+</head>
+<body>
+
+<h2>{{ course.title }}</h2>
+
+<p>{{ course.content }}</p>
+
+<h3>📚 Topics:</h3>
+
+<ul>
+    {% for topic in course.topics %}
+        <li>
+            <a href="{{ topic.link }}" target="_blank">
+                {{ topic.name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+<br>
+<a href="/courses">Back to Courses</a>
+
+</body>
+</html>
