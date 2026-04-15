@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real-Time Chat App</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(270deg, #0f2027, #2c5364, #1c1c3c);
+    background-size: 600% 600%;
+    animation: gradientBG 10s ease infinite;
+    color: white;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%;}
+    50% { background-position: 100% 50%;}
+    100% { background-position: 0% 50%;}
+}
+
+.chat-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 0 25px rgba(0,255,255,0.5);
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    overflow: hidden;
+}
+
+.header {
+    padding: 15px;
+    text-align: center;
+    font-size: 22px;
+    background: linear-gradient(45deg, #ff00cc, #3333ff);
+    font-weight: bold;
+}
+
+.messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    margin: 10px 0;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+    animation: fadeIn 0.3s ease;
+}
+
+.sent {
+    background: linear-gradient(45deg, #00ffcc, #00ccff);
+    align-self: flex-end;
+    color: black;
+}
+
+.received {
+    background: linear-gradient(45deg, #ff6a00, #ee0979);
+    align-self: flex-start;
+}
+
+.input-area {
+    display: flex;
+    padding: 10px;
+    background: rgba(255,255,255,0.1);
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+button {
+    margin-left: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, #00ffcc, #00ccff);
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+.messages::-webkit-scrollbar {
+    width: 5px;
+}
+.messages::-webkit-scrollbar-thumb {
+    background: cyan;
+    border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chat-container">
+    <div class="header">💬 Real-Time Chat App</div>
+    <div class="messages" id="messages"></div>
+
+    <div class="input-area">
+        <input type="text" id="messageInput" placeholder="Type a message..." />
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+// ===== MESSAGE STORAGE =====
+let messages = JSON.parse(localStorage.getItem("chatHistory")) || [];
+const messagesDiv = document.getElementById("messages");
+
+// ===== LOAD OLD MESSAGES =====
+messages.forEach(msg => displayMessage(msg.text, msg.type));
+
+// ===== DISPLAY MESSAGE =====
+function displayMessage(text, type) {
+    const msg = document.createElement("div");
+    msg.classList.add("message", type);
+    msg.innerText = text;
+    messagesDiv.appendChild(msg);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+// ===== BOT REPLIES =====
+const botReplies = [
+    "Hello 👋",
+    "How are you?",
+    "That's interesting 😃",
+    "Tell me more!",
+    "Nice 👍",
+    "I agree with you",
+    "Can you explain that?",
+    "Wow 😮",
+    "Sounds good!",
+    "Okay 👍"
+];
+
+// ===== SEND MESSAGE =====
+function sendMessage() {
+    const input = document.getElementById("messageInput");
+    const text = input.value.trim();
+
+    if (text === "") return;
+
+    // Show user message
+    displayMessage(text, "sent");
+
+    messages.push({text, type: "sent"});
+    localStorage.setItem("chatHistory", JSON.stringify(messages));
+
+    input.value = "";
+
+    // Simulate real-time response
+    setTimeout(() => {
+        const reply = botReplies[Math.floor(Math.random() * botReplies.length)];
+
+        displayMessage(reply, "received");
+
+        messages.push({text: reply, type: "received"});
+        localStorage.setItem("chatHistory", JSON.stringify(messages));
+    }, 800 + Math.random() * 1000);
+}
+
+// ===== ENTER KEY SEND =====
+document.getElementById("messageInput")
+.addEventListener("keypress", function(e) {
+    if (e.key === "Enter") sendMessage();
+});
+</script>
+
+</body>
+</html>
