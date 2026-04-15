@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lohitha | All Projects</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Poppins;
+}
+
+body{
+  background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  color:white;
+}
+
+/* NAVBAR */
+nav{
+  display:flex;
+  justify-content:space-around;
+  padding:15px;
+  background:#000;
+  position:sticky;
+  top:0;
+}
+
+nav a{
+  color:white;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+nav a:hover{
+  color:#c084fc;
+  text-shadow:0 0 10px #c084fc;
+}
+
+/* SECTION */
+section{
+  padding:60px 10%;
+}
+
+/* TITLE */
+h1{
+  text-align:center;
+  margin-bottom:30px;
+  color:#c084fc;
+  text-shadow:0 0 20px #c084fc;
+}
+
+/* CARD */
+.card{
+  background:rgba(255,255,255,0.05);
+  padding:20px;
+  margin:15px;
+  border-radius:15px;
+  box-shadow:0 0 15px #c084fc;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:scale(1.05);
+}
+
+/* QUIZ */
+.option{
+  background:#111;
+  margin:10px 0;
+  padding:10px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.option:hover{
+  background:#9333ea;
+}
+
+/* CHAT */
+.chat-box{
+  height:200px;
+  overflow:auto;
+  background:#111;
+  padding:10px;
+  border-radius:10px;
+}
+
+input{
+  width:70%;
+  padding:10px;
+  margin-top:10px;
+}
+
+button{
+  padding:10px;
+  background:#c084fc;
+  border:none;
+  cursor:pointer;
+}
+
+/* PORTFOLIO */
+.skills span{
+  background:#111;
+  padding:8px;
+  margin:5px;
+  display:inline-block;
+  border-radius:10px;
+}
+
+/* VIDEO */
+iframe{
+  width:100%;
+  height:250px;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <a href="#quiz">Quiz</a>
+  <a href="#chat">Chat</a>
+  <a href="#portfolio">Portfolio</a>
+  <a href="#elearning">E-Learning</a>
+</nav>
+
+<!-- QUIZ -->
+<section id="quiz">
+<h1>🧠 Quiz App</h1>
+<div class="card">
+  <h3 id="question"></h3>
+  <div id="options"></div>
+  <button onclick="nextQ()">Next</button>
+</div>
+</section>
+
+<!-- CHAT -->
+<section id="chat">
+<h1>💬 Chat App</h1>
+<div class="card">
+  <div class="chat-box" id="chatBox"></div>
+  <input id="msg" placeholder="Type message">
+  <button onclick="send()">Send</button>
+</div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+<h1>👤 Lohitha</h1>
+<div class="card">
+  <p>DevOps Engineer | Web Developer</p>
+  <div class="skills">
+    <span>Python</span>
+    <span>Docker</span>
+    <span>Kubernetes</span>
+    <span>HTML</span>
+    <span>CSS</span>
+  </div>
+</div>
+</section>
+
+<!-- E-LEARNING -->
+<section id="elearning">
+<h1>📚 E-Learning</h1>
+<div class="card">
+  <iframe src="https://www.youtube.com/embed/UB1O30fR-EE"></iframe>
+  <button onclick="complete()">Mark Completed</button>
+  <p id="progress"></p>
+</div>
+</section>
+
+<script>
+// QUIZ
+const quiz=[
+{q:"DevOps is?",o:["Tool","Culture","Lang"],a:"Culture"},
+{q:"CI/CD tool?",o:["Docker","Jenkins","Linux"],a:"Jenkins"}
+];
+let i=0,score=0,sel=null;
+
+function loadQ(){
+  let q=quiz[i];
+  document.getElementById("question").innerText=q.q;
+  let opt="";
+  q.o.forEach(x=>{
+    opt+=<div class="option" onclick="selOpt('${x}')">${x}</div>;
+  });
+  document.getElementById("options").innerHTML=opt;
+}
+
+function selOpt(x){ sel=x; }
+
+function nextQ(){
+  if(sel==quiz[i].a) score++;
+  i++;
+  if(i<quiz.length) loadQ();
+  else alert("Score:"+score);
+}
+
+loadQ();
+
+// CHAT (UI only)
+function send(){
+  let msg=document.getElementById("msg").value;
+  let box=document.getElementById("chatBox");
+  box.innerHTML+=<p>${msg}</p>;
+  document.getElementById("msg").value="";
+}
+
+// E-LEARNING
+let prog=0;
+function complete(){
+  prog++;
+  document.getElementById("progress").innerText="Completed:"+prog;
+}
+</script>
+
+</body>
+</html>
